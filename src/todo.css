@@ -108,3 +108,44 @@ body {
     transform: scale(1.05);
     background: rgba(255, 255, 255, 0.5);
 }
+/* Delete Button */
+.delete-button {
+    background: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+    margin-left: 10px;
+}
+
+.delete-button:hover {
+    background: #e04350;
+    transform: scale(1.05);
+}
+
+/* Toggle (Done/Undo) Button */
+.toggle-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+    margin-left: 10px;
+}
+
+.toggle-button:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+/* If task is marked as done, change style */
+.task-item.done {
+    text-decoration: line-through;
+    opacity: 0.6;
+}

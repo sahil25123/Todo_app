@@ -1,21 +1,40 @@
-import { useState } from "react";
-import "./todo.css"; // Import modern styles
+import { useState, useEffect } from "react";
+import "./Todo.css"; // Import CSS
 
 function Todo() {
-    const [tasks, setTasks] = useState(["Complete the project"]);
+    // Load tasks from localStorage (if available)
+    const [tasks, setTasks] = useState(() => {
+        const savedTasks = localStorage.getItem("tasks");
+        return savedTasks ? JSON.parse(savedTasks) : [];
+    });
+
     const [newTask, setNewTask] = useState("");
+
+    // Save tasks to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
 
     function addNewTask() {
         if (newTask.trim() === "") {
             alert("Task cannot be empty!");
             return;
         }
-        setTasks([...tasks, newTask]);
-        setNewTask(""); // Clear input field after adding
+        const newTaskObj = { id: Date.now(), text: newTask, isDone: false };
+        setTasks([...tasks, newTaskObj]);
+        setNewTask(""); // Clear input field
     }
 
     function updateTask(event) {
         setNewTask(event.target.value);
+    }
+
+    function deleteTask(id) {
+        setTasks(tasks.filter(task => task.id !== id));
+    }
+
+    function toggleTask(id) {
+        setTasks(tasks.map(task => task.id === id ? { ...task, isDone: !task.isDone } : task));
     }
 
     return (
@@ -40,9 +59,15 @@ function Todo() {
                     <p className="no-task">🎉 No tasks! Enjoy your day!</p>
                 ) : (
                     <ul className="task-list">
-                        {tasks.map((task, index) => (
-                            <li key={index} className="task-item">
-                                {task}
+                        {tasks.map((task) => (
+                            <li key={task.id} className={`task-item ${task.isDone ? "done" : ""}`}>
+                                {task.text}
+                                <button onClick={() => toggleTask(task.id)} className="toggle-button">
+                                    {task.isDone ? "Undo" : "Done"}
+                                </button>
+                                <button onClick={() => deleteTask(task.id)} className="delete-button">
+                                    Delete
+                                </button>
                             </li>
                         ))}
                     </ul>
@@ -53,4 +78,3 @@ function Todo() {
 }
 
 export default Todo;
-  
